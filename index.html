@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>High Plush Share - Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 350px;
+      text-align: center;
+    }
+    /* Logo Styling */
+    .logo {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 4px solid #28a745;
+      object-fit: cover;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 22px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 8px;
+      background: #28a745;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #218838;
+      transform: translateY(-2px);
+    }
+    .link {
+      margin-top: 10px;
+      display: block;
+      color: #007bff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem;
+        border-radius: 10px;
+      }
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+      h2 {
+        font-size: 20px;
+      }
+      input, button {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Replace logo.png with your High Plush Share logo -->
+    <img src="img/ChatGPT Image Sep 15, 2025, 06_13_47 PM.png" alt="High Plush Share Logo" class="logo">
+    <h2>Login</h2>
+    <input type="text" placeholder="Username" id="username">
+    <input type="password" placeholder="Password" id="password">
+    <button onclick="login()">Login</button>
+    <span class="link" onclick="goRegister()">Don’t have an account? Register</span>
+  </div>
+
+  <script>
+    function login() {
+      alert("This is just a demo. You clicked login!");
+    }
+    function goRegister() {
+      window.location.href = "register.html";
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>High Plush Share - Register</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f3f6fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+  }
+  .logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid #28a745;
+    object-fit: cover;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  h2 { margin-bottom: 20px; color: #333; font-size: 22px; }
+  input, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 8px;
+    background: #28a745;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover { background: #218838; transform: translateY(-2px); }
+  .link { margin-top: 10px; display: block; color: #007bff; cursor: pointer; font-size: 14px; }
+  .link:hover { text-decoration: underline; }
+  .ad-banner { margin: 20px auto; text-align: center; width: 100%; }
+  .ad-banner img { max-width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
+  /* Mobile responsive improvements */
+  @media (max-width: 480px) {
+    .container {
+      padding: 1.2rem;
+      width: 95%;
+    }
+    .logo {
+      width: 70px;
+      height: 70px;
+    }
+    h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    input, select, button {
+      font-size: 14px;
+      padding: 10px;
+    }
+    .ad-banner img {
+      max-width: 100%;
+      height: auto;
+    }
+    #verify-section input, #verify-section button {
+      margin-bottom: 8px;
+    }
+    #timer {
+      font-size: 13px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <img src="img/ChatGPT Image Sep 15, 2025, 06_13_47 PM.png" alt="High Plush Share Logo" class="logo">
+  <h2>Create New Account</h2>
+
+  <select>
+    <option>Nigeria (NGN)</option>
+    <option>Ghana (GHS)</option>
+    <option>United States (USD)</option>
+  </select>
+
+  <input type="email" id="email" placeholder="E-mail">
+  <input type="password" placeholder="Password">
+  <input type="password" placeholder="Confirm Password">
+
+  <button id="getCodeBtn">Get Verification Code</button>
+
+  <div id="verify-section" style="display: none; margin-top: 10px;">
+    <input type="text" id="verify" placeholder="Enter verification code">
+    <button id="verifyBtn">Verify Code</button>
+    <small id="timer" style="display:block; margin-top:5px; color:#555;">Code expires in 5:00</small>
+  </div>
+
+  <button onclick="register()">Register</button>
+  <span class="link" onclick="goLogin()">Already have an account? Login</span>
+</div>
+
+<div class="ad-banner">
+  <img src="img/share.png" alt="Advertisement">
+</div>
+
+<script>
+function register() {
+  alert("This is just a demo. You clicked register!");
+}
+
+function goLogin() {
+  window.location.href = "login.html";
+}
+
+// Verification code logic
+let countdownInterval;
+
+document.getElementById("getCodeBtn").addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  if (!email) return alert("Please enter your email!");
+
+  try {
+    const res = await fetch("http://localhost:3000/send-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (!res.ok) return alert(data.message);
+
+    alert(data.message);
+    document.getElementById("verify-section").style.display = "block";
+
+    // Start 5-minute countdown
+    let timeLeft = 300;
+    const timerEl = document.getElementById("timer");
+    clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      timerEl.textContent = `Code expires in ${minutes}:${seconds.toString().padStart(2,'0')}`;
+      timeLeft--;
+      if (timeLeft < 0) {
+        clearInterval(countdownInterval);
+        timerEl.textContent = "Code expired! Request a new one.";
+      }
+    }, 1000);
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to send code. Try again.");
+  }
+});
+
+document.getElementById("verifyBtn").addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const code = document.getElementById("verify").value;
+  if (!code) return alert("Enter the verification code!");
+
+  try {
+    const res = await fetch("http://localhost:3000/verify-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, code })
+    });
+    const data = await res.json();
+    if (!res.ok) return alert(data.message);
+    alert(data.message);
+    clearInterval(countdownInterval);
+  } catch (err) {
+    console.error(err);
+    alert("Verification failed. Try again.");
+  }
+});
+</script>
+
+</body>
+</html>
